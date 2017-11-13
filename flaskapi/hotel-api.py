@@ -1,5 +1,24 @@
 from flask import Flask, redirect, url_for, request
+from flask_mysqldb import MySQL 
+
+# pip install virtualenv
+# venv/bin/activate
+# pip install flask
+# pip install flask-mysqldb
+
 app = Flask(__name__)
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'hotel_booking'
+
+mysql = MySQL(app)
+
+@app.route('/')
+def init():
+	cur = mysql.connection.cursor()
+	cur.execute('''SELECT * FROM book''')
+	rv = cur.fetchall()
+	return str(rv)
 
 @app.route('/hello/<name>')
 def hello_world(name):

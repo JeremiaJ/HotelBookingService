@@ -4,12 +4,12 @@ import java.util.logging.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-public class BookHotel implements JavaDelegate {
+public class ConfirmPayment implements JavaDelegate {
 
   private final static Logger LOGGER = Logger.getLogger("LOAN-REQUESTS");
 
   public void execute(DelegateExecution execution) throws Exception {
-    LOGGER.info("Processing Hotel Booking request by '" + execution.getVariable("customerId") + "'...");
+    LOGGER.info("Processing Confirm Payment request by '" + execution.getVariable("customerId") + "'...");
   }
 
 }

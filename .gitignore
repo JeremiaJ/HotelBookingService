@@ -1,4 +1,5 @@
 hotel-booking/target/
-/.metadata
+hotel-booking/.settings/
+/.metadata/
 /RemoteSystemTempFiles
-hotel-booking/.bpmn
+hotel-booking/.bpmn/

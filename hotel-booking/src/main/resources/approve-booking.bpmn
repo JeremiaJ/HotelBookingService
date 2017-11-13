@@ -4,15 +4,15 @@
     <bpmn:startEvent id="StartEvent_1xqkitn" name="Request Booking" camunda:formKey="embedded:app:forms/request-book.html">
       <bpmn:outgoing>SequenceFlow_18jyxow</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Task_12m3z02" name="Book Room">
-      <bpmn:incoming>SequenceFlow_18jyxow</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1n4cvkc</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="SequenceFlow_18jyxow" sourceRef="StartEvent_1xqkitn" targetRef="Task_12m3z02" />
     <bpmn:endEvent id="EndEvent_0us9zpj" name="Approve Booking">
       <bpmn:incoming>SequenceFlow_1n4cvkc</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1n4cvkc" sourceRef="Task_12m3z02" targetRef="EndEvent_0us9zpj" />
+    <bpmn:serviceTask id="Task_12m3z02" name="Book Room" camunda:class="com.camunda.bpm.ppls.hotelbooking.BookHotel">
+      <bpmn:incoming>SequenceFlow_18jyxow</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1n4cvkc</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="booking-hotel">
@@ -21,9 +21,6 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="162" y="156" width="83" height="12" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_12m3z02_di" bpmnElement="Task_12m3z02">
-        <dc:Bounds x="273" y="94" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_18jyxow_di" bpmnElement="SequenceFlow_18jyxow">
         <di:waypoint xsi:type="dc:Point" x="221" y="134" />
@@ -45,6 +42,9 @@
           <dc:Bounds x="401" y="113" width="0" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0xkda9e_di" bpmnElement="Task_12m3z02">
+        <dc:Bounds x="273" y="94" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

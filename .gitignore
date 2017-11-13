@@ -4,3 +4,5 @@ hotel-booking/.settings/
 hotel-booking/.bpmn/
 /RemoteSystemsTempFiles
 .metadata
+/flaskapi/venv/
+/flaskapi/*.html

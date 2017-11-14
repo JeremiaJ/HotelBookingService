@@ -3,6 +3,6 @@ hotel-booking/.settings/
 /.metadata/
 hotel-booking/.bpmn/
 /RemoteSystemsTempFiles
-.metadata
 /flaskapi/venv/
 /flaskapi/*.html
+/.recommenders

@@ -16,17 +16,12 @@ public class BookHotel implements JavaDelegate {
 	  final Logger LOGGER = Logger.getLogger("HOTEL-BOOKING");
 	  final String USER_AGENT = "Mozilla/5.0";
 
-	  LOGGER.info("Completing Transaction");
-	  String namaBarang = execution.getVariable("namaBarang").toString();
-	  String namaPengirim = execution.getVariable("namaPengirim").toString();
-	  String alamatPengirim = execution.getVariable("alamatPengirim").toString();
-	  String teleponPengirim = execution.getVariable("teleponPengirim").toString();
-	  String namaPenerima = execution.getVariable("namaPenerima").toString();
-	  String alamatPenerima = execution.getVariable("alamatPenerima").toString();
-	  String teleponPenerima = execution.getVariable("teleponPenerima").toString();
-	  String jenisBarang = execution.getVariable("jenisBarang").toString();
-	  Double beratBarang = Double.valueOf(execution.getVariable("beratBarang").toString()).doubleValue();
-	  Double hargaBarang = Double.valueOf(execution.getVariable("hargaBarang").toString()).doubleValue();
+	  LOGGER.info("Booking Hotel");
+	  String customer_id = execution.getVariable("customer_id").toString();
+	  Double paid_price = Double.valueOf(execution.getVariable("paid_price").toString()).doubleValue();
+	  String type = execution.getVariable("type").toString();
+	  Double amount = Double.valueOf(execution.getVariable("amount").toString()).doubleValue();
+	  String worker_id = execution.getVariable("worker_id").toString();
 
 	  String url = "http://localhost:4004/book/create";
 		URL obj = new URL(url);
@@ -37,7 +32,7 @@ public class BookHotel implements JavaDelegate {
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-		String urlParameters = "nama=" + namaBarang + "&nama_pengirim=" + namaPengirim + "&alamat_pengirim=" + alamatPengirim + "&telepon_pengirim=" + teleponPengirim + "&nama_penerima=" + namaPenerima + "&alamat_penerima=" + alamatPenerima + "&telepon_penerima=" + teleponPenerima + "&jenis=" + jenisBarang  + "&keterangan=" + jenisBarang + "&berat=" + beratBarang.toString();
+		String urlParameters = "customer_id=" + customer_id + "&paid_price=" + paid_price.toString() + "&type=" + type + "&amount=" + amount.toString() + "&worker_id=" + worker_id;
 		// Send post request
 		con.setDoOutput(true);
 		DataOutputStream wr = new DataOutputStream(con.getOutputStream());

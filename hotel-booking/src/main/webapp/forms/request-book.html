@@ -1,10 +1,24 @@
 <form name="requestBook">
   <div class="form-group">
-    <label for="customerId">Customer ID</label>
+    <label for="customer_id">Customer ID</label>
     <input class="form-control"
            cam-variable-type="String"
-           cam-variable-name="customerId"
-           name="customerId" />
+           cam-variable-name="customer_id"
+           name="customer_id" />
+  </div>
+  <div class="form-group">
+    <label for="paid_price">Paid Price</label>
+    <input class="form-control"
+           cam-variable-type="Double"
+           cam-variable-name="paid_price"
+           name="paid_price" />
+  </div>
+  <div class="form-group">
+    <label for="type">Type</label>
+    <input class="form-control"
+           cam-variable-type="String"
+           cam-variable-name="type"
+           name="type" />
   </div>
   <div class="form-group">
     <label for="amount">Amount</label>
@@ -12,5 +26,12 @@
            cam-variable-type="Double"
            cam-variable-name="amount"
            name="amount" />
+  </div>
+  <div class="form-group">
+    <label for="worker_id">Worker ID</label>
+    <input class="form-control"
+           cam-variable-type="String"
+           cam-variable-name="worker_id"
+           name="worker_id" />
   </div>
 </form>

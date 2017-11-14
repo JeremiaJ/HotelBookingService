@@ -13,16 +13,16 @@
       <bpmn:outgoing>SequenceFlow_141zfoh</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0h53frn" sourceRef="Task_0ngznbp" targetRef="EndEvent_0us9zpj" />
-    <bpmn:serviceTask id="Task_0ngznbp" name="Confirm Payment" camunda:class="com.camunda.bpm.ppls.hotelbooking.ConfirmPayment">
-      <bpmn:incoming>SequenceFlow_171p9ts</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0h53frn</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_141zfoh" sourceRef="Task_12m3z02" targetRef="Task_05v5o0d" />
     <bpmn:serviceTask id="Task_05v5o0d" name="Process Payment" camunda:class="com.camunda.bpm.ppls.hotelbooking.PaymentProcess">
       <bpmn:incoming>SequenceFlow_141zfoh</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_171p9ts</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_171p9ts" sourceRef="Task_05v5o0d" targetRef="Task_0ngznbp" />
+    <bpmn:userTask id="Task_0ngznbp" name="Confirm Payment" camunda:assignee="Confirmator">
+      <bpmn:incoming>SequenceFlow_171p9ts</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0h53frn</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="booking-hotel">
@@ -52,12 +52,9 @@
         <di:waypoint xsi:type="dc:Point" x="674" y="134" />
         <di:waypoint xsi:type="dc:Point" x="741" y="134" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="707.5" y="113" width="0" height="12" />
+          <dc:Bounds x="662.5" y="113" width="90" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_13lptz6_di" bpmnElement="Task_0ngznbp">
-        <dc:Bounds x="574" y="94" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_141zfoh_di" bpmnElement="SequenceFlow_141zfoh">
         <di:waypoint xsi:type="dc:Point" x="373" y="134" />
         <di:waypoint xsi:type="dc:Point" x="422" y="134" />
@@ -72,9 +69,12 @@
         <di:waypoint xsi:type="dc:Point" x="522" y="134" />
         <di:waypoint xsi:type="dc:Point" x="574" y="134" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="548" y="113" width="0" height="12" />
+          <dc:Bounds x="503" y="113" width="90" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0qxiygf_di" bpmnElement="Task_0ngznbp">
+        <dc:Bounds x="574" y="94" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

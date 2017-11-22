@@ -13,7 +13,7 @@ import datetime
 
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = '123456'
 app.config['MYSQL_DB'] = 'hotel_booking'
 
 mysql = MySQL(app)
@@ -34,25 +34,75 @@ def list_book():
 	rv = cur.fetchall()
 	return jsonify(rv)
 
+def check_room_stock_availability(room_id, requested_stock_amount):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT stock FROM room WHERE (type = '%s')''' % room_id ) 
+	rv = cur.fetchall()
+	if int(rv[0]['stock']) >= requested_stock_amount:
+		return True
+	else:
+		return False
+
+def check_valid_room_id(room_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT stock FROM room WHERE (type = '%s')''' % room_id ) 
+	rv = cur.fetchall()
+	if len(rv) > 0:
+		return True
+	else:
+		return False
+
+def check_valid_customer_id(customer_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT id FROM customer WHERE (id = '%s')''' % customer_id ) 
+	rv = cur.fetchall()
+	if len(rv) > 0:
+		return True
+	else:
+		return False
+
+def check_valid_worker_id(worker_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT id FROM worker WHERE (id = '%s')''' % worker_id ) 
+	rv = cur.fetchall()
+	if len(rv) > 0:
+		return True
+	else:
+		return False
+
+def get_room_price(room_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT price FROM room WHERE (type = '%s')''' % room_id ) 
+	rv = cur.fetchall()
+	return int(rv[0]['price'])
+
 @app.route('/book/create', methods = ['POST'])
 def create_book():
 	if request.method == "POST":
 		customer_id = request.form['customer_id']
-		paid_price = request.form['paid_price']
+		if check_valid_customer_id(customer_id) == False:
+			return 'invalid customer_id', 412
+		paid_price = 0
 		room_id = request.form['type']
-		amount = request.form['amount']
+		if check_valid_room_id(room_id) == False:
+			return 'invalid room_id', 412
+		amount = int(request.form['amount'])
+		if amount <= 0:
+			return 'invalid amount', 412
+		if check_room_stock_availability(room_id, amount) == False:
+			return 'not enough stock for room %s' % room_id, 412
 		worker_id = request.form['worker_id']
+		if check_valid_worker_id(worker_id) == False:
+			return 'invalid worker_id', 412
 		book_id = id_generator(12)
-		transaction_id = id_generator(16)
+		total_price = get_room_price(room_id) * amount
 		date = generate_date()
 
 		cur = mysql.connection.cursor()
-		queryCreate = '''INSERT INTO book (id, customer_id, paid_price, type, amount, worker_id) VALUES ('%s', %s, %s, '%s', %s, %s)''' % (book_id, customer_id, paid_price, room_id, amount, worker_id)
+		queryCreate = '''INSERT INTO book (id, customer_id, paid_price, type, amount, worker_id, total_price) VALUES ('%s', %s, %s, '%s', %s, %s, %s)''' % (book_id, customer_id, paid_price, room_id, amount, worker_id, total_price)
 		cur.execute(queryCreate)
 		queryRoom = '''UPDATE room SET stock = stock - %s WHERE type = '%s' ''' % (amount, room_id)
 		cur.execute(queryRoom)		
-		queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (transaction_id, book_id, paid_price, date)
-		cur.execute(queryTransaction)
 		mysql.connection.commit()
 		return ''
 
@@ -103,21 +153,38 @@ def check_transaction(transaction_id):
 	rv = cur.fetchall()
 	return jsonify(rv)
 
+def check_valid_book_id(book_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT id FROM book WHERE (id = '%s')''' % book_id ) 
+	rv = cur.fetchall()
+	if len(rv) > 0:
+		return True
+	else:
+		return False
+
+def get_total_price(book_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT total_price FROM book WHERE (id = '%s')''' % book_id ) 
+	rv = cur.fetchall()
+	return int(rv[0]['total_price'])
+
 @app.route('/transaction/pay', methods = ['POST'])
 def add_payment():
 	if request.method == "POST":
 		book_id = request.form['book_id']
-		paid_price = request.form['paid_price']
+		if check_valid_book_id(book_id):
+			return 'invalid book_id', 412
+		total_price = get_total_price(book_id)
 		transaction_id = id_generator(16)
 		date = generate_date()
 
 		cur = mysql.connection.cursor()
-		queryBook = '''UPDATE book SET paid_price = paid_price + %s WHERE id = '%s' ''' % (paid_price, book_id)
+		queryBook = '''UPDATE book SET paid_price = paid_price + %s WHERE id = '%s' ''' % (total_price, book_id)
 		cur.execute(queryBook)
-		queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (transaction_id, book_id, paid_price, date)
+		queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (transaction_id, book_id, total_price, date)
 		cur.execute(queryTransaction)
 		mysql.connection.commit()
-		return ''	
+		return check_booking(book_id)
 
 # Customer
 @app.route('/customer/check/<customer_id>')

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.11.2">
+  <bpmn:process id="payment-booking" name="Hotel Payment System" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:formKey="embedded:app:forms/payment-process.html">
+      <bpmn:outgoing>SequenceFlow_1t9ze65</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="ServiceTask_1rioafr" name="Payment Process" camunda:class="com.camunda.bpm.ppls.hotelpayment.PaymentProcess">
+      <bpmn:incoming>SequenceFlow_1t9ze65</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0vsgy2b</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1t9ze65" sourceRef="StartEvent_1" targetRef="ServiceTask_1rioafr" />
+    <bpmn:endEvent id="EndEvent_0pdedom">
+      <bpmn:incoming>SequenceFlow_1e6z8es</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0vsgy2b" sourceRef="ServiceTask_1rioafr" targetRef="Task_1w9ps7a" />
+    <bpmn:sequenceFlow id="SequenceFlow_1e6z8es" sourceRef="Task_1w9ps7a" targetRef="EndEvent_0pdedom" />
+    <bpmn:serviceTask id="Task_1w9ps7a" name="Print Receipt" camunda:class="com.camunda.bpm.ppls.hotelpayment.PrintReceipt">
+      <bpmn:incoming>SequenceFlow_0vsgy2b</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1e6z8es</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="payment-booking">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1rioafr_di" bpmnElement="ServiceTask_1rioafr">
+        <dc:Bounds x="300" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1t9ze65_di" bpmnElement="SequenceFlow_1t9ze65">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="300" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="254.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0pdedom_di" bpmnElement="EndEvent_0pdedom">
+        <dc:Bounds x="737" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="755" y="142" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0vsgy2b_di" bpmnElement="SequenceFlow_0vsgy2b">
+        <di:waypoint xsi:type="dc:Point" x="400" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="489" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="444.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1e6z8es_di" bpmnElement="SequenceFlow_1e6z8es">
+        <di:waypoint xsi:type="dc:Point" x="589" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="737" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="663" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1noozob_di" bpmnElement="Task_1w9ps7a">
+        <dc:Bounds x="489" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

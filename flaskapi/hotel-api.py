@@ -192,7 +192,7 @@ def get_total_price(book_id):
 def add_payment():
 	if request.method == "POST":
 		book_id = request.form['book_id']
-		if check_valid_book_id(book_id):
+		if check_valid_book_id(book_id) == False:
 			return 'invalid book_id', 412
 		total_price = get_total_price(book_id)
 		transaction_id = id_generator(16)

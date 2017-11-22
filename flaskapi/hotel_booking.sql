@@ -34,23 +34,24 @@ CREATE TABLE IF NOT EXISTS `book` (
   `paid_price` int(11) NOT NULL,
   `type` varchar(255) NOT NULL,
   `amount` int(11) NOT NULL,
-  `worker_id` int(11) NOT NULL
+  `worker_id` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`id`, `customer_id`, `paid_price`, `type`, `amount`, `worker_id`) VALUES
-('1E43EPG1AV4C', 1, 140501, 'KU-03', 5, 1),
-('390PGTELM6TJ', 2, 1231, 'Ax02', 12, 1),
-('CZGROC0PMJY9', 1, 1231, 'Ax02', 2, 1),
-('D1OPB8XNWK6R', 1, 123123, 'KARTU', 1, 1),
-('DTZCURZA08EV', 1, 123123, 'Ax02', 1, 1),
-('IIG7ZEJSPTUK', 1, 120000, 'KU-03', 1, 1),
-('OPFY8CK1W00N', 1, 5231, 'Sirius', 12091, 3),
-('YY5AJX4JYXTA', 1, 50000, 'Ax02', 2, 1),
-('ZXWVA5BSXXNA', 1, 12312, 'Kudas', 1, 1);
+INSERT INTO `book` (`id`, `customer_id`, `paid_price`, `type`, `amount`, `worker_id`, `total_price`) VALUES
+('1E43EPG1AV4C', 1, 140501, 'KU-03', 5, 1, 0),
+('390PGTELM6TJ', 2, 1231, 'Ax02', 12, 1, 0),
+('CZGROC0PMJY9', 1, 1231, 'Ax02', 2, 1, 0),
+('D1OPB8XNWK6R', 1, 123123, 'KARTU', 1, 1, 0),
+('DTZCURZA08EV', 1, 123123, 'Ax02', 1, 1, 0),
+('IIG7ZEJSPTUK', 1, 120000, 'KU-03', 1, 1, 0),
+('OPFY8CK1W00N', 1, 5231, 'Sirius', 12091, 3, 0),
+('YY5AJX4JYXTA', 1, 50000, 'Ax02', 2, 1, 0),
+('ZXWVA5BSXXNA', 1, 12312, 'Kudas', 1, 1, 0);
 
 -- --------------------------------------------------------
 

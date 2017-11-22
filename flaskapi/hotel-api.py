@@ -126,7 +126,7 @@ def create_book():
 		mysql.connection.commit()
 		return ''
 
-@app.route('/book/check/<book_id>')
+@app.route('/book/check/<book_id>', methods = ['GET'])
 def check_booking(book_id):
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	cur.execute('''SELECT * FROM book WHERE (id = '%s')''' % book_id ) 
@@ -166,7 +166,7 @@ def check_availability(room_id):
 		return "Not Available"
 
 # Transaction
-@app.route('/transaction/check/<transaction_id>')
+@app.route('/transaction/check/<transaction_id>', methods = ['GET'])
 def check_transaction(transaction_id):
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	cur.execute('''SELECT * FROM transaction WHERE (id = '%s')''' % transaction_id ) 
@@ -207,7 +207,7 @@ def add_payment():
 		return check_booking(book_id)
 
 # Customer
-@app.route('/customer/check/<customer_id>')
+@app.route('/customer/check/<customer_id>', methods = ['GET'])
 def check_customer(customer_id):
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	cur.execute('''SELECT * FROM customer WHERE (id = '%s')''' % customer_id ) 
@@ -226,7 +226,7 @@ def create_customer():
 		return ''
 
 # Worker
-@app.route('/worker/check/<worker_id>')
+@app.route('/worker/check/<worker_id>', methods = ['GET'])
 def check_worker(worker_id):
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	cur.execute('''SELECT * FROM worker WHERE (id = '%s')''' % worker_id ) 

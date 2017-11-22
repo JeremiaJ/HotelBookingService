@@ -6,7 +6,8 @@ import random
 import datetime
 
 # pip install virtualenv
-# venv/bin/activate
+# virtualenv venv
+# venv\scripts\activate
 # pip install flask
 # pip install flask-mysqldb
 

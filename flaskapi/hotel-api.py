@@ -76,6 +76,26 @@ def get_room_price(room_id):
 	rv = cur.fetchall()
 	return int(rv[0]['price'])
 
+@app.route('/book/validate', methods = ['POST'])
+def validate_book():
+	if request.method == "POST":
+		customer_id = request.form['customer_id']
+		if check_valid_customer_id(customer_id) == False:
+			return 'invalid customer_id', 412
+		paid_price = 0
+		room_id = request.form['type']
+		if check_valid_room_id(room_id) == False:
+			return 'invalid room_id', 412
+		amount = int(request.form['amount'])
+		if amount <= 0:
+			return 'invalid amount', 412
+		if check_room_stock_availability(room_id, amount) == False:
+			return 'not enough stock for room %s' % room_id, 412
+		worker_id = request.form['worker_id']
+		if check_valid_worker_id(worker_id) == False:
+			return 'invalid worker_id', 412
+		return 'ok'
+
 @app.route('/book/create', methods = ['POST'])
 def create_book():
 	if request.method == "POST":

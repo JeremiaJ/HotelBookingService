@@ -22,7 +22,7 @@ public class BookHotel implements JavaDelegate {
 	  Integer amount = Integer.valueOf(execution.getVariable("amount").toString());
 	  String worker_id = execution.getVariable("worker_id").toString();
 
-	  String url = "http://localhost:5000/book/create";
+	  String url = "http://167.205.35.162:5000/book/create";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

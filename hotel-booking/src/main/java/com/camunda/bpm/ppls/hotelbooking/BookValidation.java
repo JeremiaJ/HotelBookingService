@@ -10,10 +10,11 @@ import java.util.logging.Logger;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-public class BookHotel implements JavaDelegate {
-
-  public void execute(DelegateExecution execution) throws Exception {
-	  final Logger LOGGER = Logger.getLogger("HOTEL-BOOKING");
+public class BookValidation implements JavaDelegate {
+	  // Inject the entity manager
+	
+	public void execute(DelegateExecution execution) throws Exception {
+	  final Logger LOGGER = Logger.getLogger("BOOK-VALIDATION");
 	  final String USER_AGENT = "Mozilla/5.0";
 
 	  LOGGER.info("Booking Hotel");
@@ -22,7 +23,7 @@ public class BookHotel implements JavaDelegate {
 	  Integer amount = Integer.valueOf(execution.getVariable("amount").toString());
 	  String worker_id = execution.getVariable("worker_id").toString();
 
-	  String url = "http://localhost:5000/book/create";
+	  String url = "http://localhost:5000/book/validate";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -40,6 +41,11 @@ public class BookHotel implements JavaDelegate {
 		wr.close();
 		
 		int responseCode = con.getResponseCode();
+		if (responseCode==200){
+			execution.setVariable("valid",1);			
+		}else{
+			execution.setVariable("valid",0);			
+		}
 		LOGGER.info("\nSending 'POST' request to URL : " + url);
 		LOGGER.info("Post parameters : " + urlParameters);
 		LOGGER.info("Response Code : " + responseCode);
@@ -56,6 +62,6 @@ public class BookHotel implements JavaDelegate {
 
 		//print result
 		LOGGER.info(response.toString());
-  }
-
+		
+	}
 }

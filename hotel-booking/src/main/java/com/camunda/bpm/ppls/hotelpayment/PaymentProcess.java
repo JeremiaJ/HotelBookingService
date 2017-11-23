@@ -1,4 +1,4 @@
-package com.camunda.bpm.ppls.hotelbooking;
+package com.camunda.bpm.ppls.hotelpayment;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -10,16 +10,13 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 public class PaymentProcess implements JavaDelegate {
-
-  private final static Logger LOGGER = Logger.getLogger("LOAN-REQUESTS");
-
+	
   public void execute(DelegateExecution execution) throws Exception {
-	  final Logger LOGGER = Logger.getLogger("HOTEL-BOOKING");
+	  final Logger LOGGER = Logger.getLogger("PAYMENT-PROCESS");
 	  final String USER_AGENT = "Mozilla/5.0";
 
 	  LOGGER.info("Booking Hotel");
 	  String book_id = execution.getVariable("book_id").toString();
-	  Double paid_price = Double.valueOf(execution.getVariable("paid_price").toString()).doubleValue();
 
 	  String url = "http://localhost:5000/transaction/pay";
 		URL obj = new URL(url);
@@ -30,7 +27,7 @@ public class PaymentProcess implements JavaDelegate {
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-		String urlParameters = "book_id=" + book_id + "&paid_price=" + paid_price.toString();
+		String urlParameters = "book_id=" + book_id;
 		// Send post request
 		con.setDoOutput(true);
 		DataOutputStream wr = new DataOutputStream(con.getOutputStream());

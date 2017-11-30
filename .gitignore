@@ -1,4 +1,5 @@
 hotel-booking/target/
+!hotel-booking/target/*.war
 hotel-booking/.settings/
 /.metadata/
 hotel-booking/.bpmn/

@@ -16,7 +16,7 @@ public class CancelPayment implements JavaDelegate {
 			
 		String transaction_id = execution.getVariable("transaction_id").toString();
 //		String url = "http://localhost:5000/transaction/fail/" + transaction_id;
-		String url = "http://167.205.35.162:5000/transaction/fail/<transaction_id>";
+		String url = "http://167.205.35.162:5000/transaction/fail/"+transaction_id;
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

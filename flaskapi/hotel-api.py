@@ -214,7 +214,7 @@ def add_payment():
 		cur.execute(queryTransaction)
 		mysql.connection.commit()
 		pay_response = {"transaction_id": transaction_id, "total_price": total_price}
-		return jsonify(pay_response)
+		return '''%s,%s''' % (transaction_id, total_price)
 
 def get_book_id(transaction_id):
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)

@@ -13,7 +13,7 @@ import datetime
 
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '123456'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'hotel_booking'
 
 mysql = MySQL(app)
@@ -166,8 +166,19 @@ def check_availability(room_id):
 		return "Not Available"
 
 # Transaction
+def check_valid_transaction_id(transaction_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT id FROM transaction WHERE (id = '%s')''' % transaction_id ) 
+	rv = cur.fetchall()
+	if len(rv) > 0:
+		return True
+	else:
+		return False
+
 @app.route('/transaction/check/<transaction_id>', methods = ['GET'])
 def check_transaction(transaction_id):
+	if check_valid_transaction_id(transaction_id) == false:
+		return 'invalid transaction_id', 412
 	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 	cur.execute('''SELECT * FROM transaction WHERE (id = '%s')''' % transaction_id ) 
 	rv = cur.fetchall()
@@ -199,12 +210,56 @@ def add_payment():
 		date = generate_date()
 
 		cur = mysql.connection.cursor()
-		queryBook = '''UPDATE book SET paid_price = paid_price + %s WHERE id = '%s' ''' % (total_price, book_id)
-		cur.execute(queryBook)
-		queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (transaction_id, book_id, total_price, date)
+		queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (transaction_id, book_id, 0, date)
 		cur.execute(queryTransaction)
 		mysql.connection.commit()
-		return check_booking(book_id)
+		pay_response = {"transaction_id": transaction_id, "total_price": total_price}
+		return '''%s,%s''' % (transaction_id, total_price)
+
+def get_book_id(transaction_id):
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cur.execute('''SELECT book_id FROM transaction WHERE (id = '%s')''' % transaction_id ) 
+	rv = cur.fetchall()
+	return rv[0]['book_id']
+
+@app.route('/transaction/success/<transaction_id>', methods = ['GET'])
+def success_transaction(transaction_id):
+	if check_valid_transaction_id(transaction_id) == False:
+		return 'invalid transaction_id', 412
+	book_id = get_book_id(transaction_id)
+	total_price = get_total_price(book_id)
+	date = generate_date()
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	queryBook = '''UPDATE book SET paid_price = %s WHERE id = '%s' ''' % (total_price, book_id)
+	cur.execute(queryBook)
+
+	new_transaction_id = id_generator(16)
+
+	queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (new_transaction_id, book_id, total_price, date)
+	cur.execute(queryTransaction)
+
+	mysql.connection.commit()
+	rv = cur.fetchall()
+	return 'ok'
+
+@app.route('/transaction/fail/<transaction_id>', methods = ['GET'])
+def fail_transaction(transaction_id):
+	if check_valid_transaction_id(transaction_id) == False:
+		return 'invalid transaction_id', 412
+	book_id = get_book_id(transaction_id)
+	date = generate_date()
+	cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	queryBook = '''UPDATE book SET paid_price = %s WHERE id = '%s' ''' % (-1, book_id)
+	cur.execute(queryBook)
+
+	new_transaction_id = id_generator(16)
+
+	queryTransaction = '''INSERT INTO transaction (id, book_id, amount, date) VALUES ('%s', '%s', %s, '%s')''' % (new_transaction_id, book_id, -1, date)
+	cur.execute(queryTransaction)
+
+	mysql.connection.commit()
+	rv = cur.fetchall()
+	return 'ok'
 
 # Customer
 @app.route('/customer/check/<customer_id>', methods = ['GET'])
@@ -257,4 +312,3 @@ def login_worker():
 
 if __name__ == '__main__':
 	app.run(host= '0.0.0.0')
-

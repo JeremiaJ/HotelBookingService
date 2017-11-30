@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.11.2">
+  <bpmn:process id="booking-hotel" name="Hotel Booking System" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1xqkitn" name="Request Booking" camunda:formKey="embedded:app:forms/request-book.html">
+      <bpmn:outgoing>SequenceFlow_18jyxow</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_18jyxow" sourceRef="StartEvent_1xqkitn" targetRef="ServiceTask_1j5ng3n" />
+    <bpmn:endEvent id="EndEvent_0us9zpj" name="Approve Booking">
+      <bpmn:incoming>SequenceFlow_141zfoh</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Task_12m3z02" name="Book Room" camunda:class="com.camunda.bpm.ppls.hotelbooking.BookHotel">
+      <bpmn:incoming>SequenceFlow_0w8sfuh</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_141zfoh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_141zfoh" sourceRef="Task_12m3z02" targetRef="EndEvent_0us9zpj" />
+    <bpmn:serviceTask id="ServiceTask_1j5ng3n" name="Validation Book" camunda:class="com.camunda.bpm.ppls.hotelbooking.BookValidation">
+      <bpmn:incoming>SequenceFlow_18jyxow</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_12k24n7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_12k24n7" sourceRef="ServiceTask_1j5ng3n" targetRef="ExclusiveGateway_04tgmm6" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_04tgmm6">
+      <bpmn:incoming>SequenceFlow_12k24n7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0w8sfuh</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0u56egy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0w8sfuh" sourceRef="ExclusiveGateway_04tgmm6" targetRef="Task_12m3z02">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valid==1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0u56egy" sourceRef="ExclusiveGateway_04tgmm6" targetRef="EndEvent_0jeygc6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valid==0}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="EndEvent_0jeygc6" name="Book Not Accepted">
+      <bpmn:incoming>SequenceFlow_0u56egy</bpmn:incoming>
+      <bpmn:terminateEventDefinition />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="booking-hotel">
+      <bpmndi:BPMNShape id="StartEvent_1xqkitn_di" bpmnElement="StartEvent_1xqkitn">
+        <dc:Bounds x="185" y="116" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="162" y="156" width="83" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_18jyxow_di" bpmnElement="SequenceFlow_18jyxow">
+        <di:waypoint xsi:type="dc:Point" x="221" y="134" />
+        <di:waypoint xsi:type="dc:Point" x="296" y="134" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="213.5" y="113" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0us9zpj_di" bpmnElement="EndEvent_0us9zpj">
+        <dc:Bounds x="741" y="116" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="717" y="156" width="84" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0xkda9e_di" bpmnElement="Task_12m3z02">
+        <dc:Bounds x="525" y="94" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_141zfoh_di" bpmnElement="SequenceFlow_141zfoh">
+        <di:waypoint xsi:type="dc:Point" x="625" y="134" />
+        <di:waypoint xsi:type="dc:Point" x="741" y="134" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="638" y="113" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1j5ng3n_di" bpmnElement="ServiceTask_1j5ng3n">
+        <dc:Bounds x="296" y="94" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_12k24n7_di" bpmnElement="SequenceFlow_12k24n7">
+        <di:waypoint xsi:type="dc:Point" x="396" y="134" />
+        <di:waypoint xsi:type="dc:Point" x="424" y="134" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="410" y="113" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_04tgmm6_di" bpmnElement="ExclusiveGateway_04tgmm6" isMarkerVisible="true">
+        <dc:Bounds x="424" y="109" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="449" y="163" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0w8sfuh_di" bpmnElement="SequenceFlow_0w8sfuh">
+        <di:waypoint xsi:type="dc:Point" x="474" y="134" />
+        <di:waypoint xsi:type="dc:Point" x="525" y="134" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499.5" y="113" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0u56egy_di" bpmnElement="SequenceFlow_0u56egy">
+        <di:waypoint xsi:type="dc:Point" x="449" y="159" />
+        <di:waypoint xsi:type="dc:Point" x="449" y="194" />
+        <di:waypoint xsi:type="dc:Point" x="449" y="194" />
+        <di:waypoint xsi:type="dc:Point" x="449" y="233" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="188" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_06bu0tp_di" bpmnElement="EndEvent_0jeygc6">
+        <dc:Bounds x="431" y="233" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="427" y="273" width="47" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

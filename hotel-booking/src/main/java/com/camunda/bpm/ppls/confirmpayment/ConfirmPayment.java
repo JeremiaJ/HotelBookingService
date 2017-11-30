@@ -17,8 +17,8 @@ public class ConfirmPayment implements JavaDelegate{
 		LOGGER.info("Booking Hotel");
 		String book_id = execution.getVariable("book_id").toString();
 		
-		String url = "http://localhost:5000/book/check/"+book_id;
-//		String url = "http://167.205.35.162:5000/book/check/"+book_id;
+//		String url = "http://localhost:5000/book/check/"+book_id;
+		String url = "http://167.205.35.162:5000/book/check/"+book_id;
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

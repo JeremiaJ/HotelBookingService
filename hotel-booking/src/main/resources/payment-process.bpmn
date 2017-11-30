@@ -32,10 +32,10 @@
       <bpmn:outgoing>SequenceFlow_0y9w8ie</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_008iyz7" name="succes" sourceRef="ExclusiveGateway_0c7vh2j" targetRef="Task_1w9ps7a">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ProcessStatus == 200}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${process_status == 200}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0y9w8ie" name="failed" sourceRef="ExclusiveGateway_0c7vh2j" targetRef="Task_19xuown">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ProcessStatus != 200}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${process_status != 200}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1ig6h12" />

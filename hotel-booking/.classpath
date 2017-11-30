@@ -32,5 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/ProjectNow/PPLS/BPEL_BPMN_WSO2/HotelBooking/hotel-booking/lib/java-json.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

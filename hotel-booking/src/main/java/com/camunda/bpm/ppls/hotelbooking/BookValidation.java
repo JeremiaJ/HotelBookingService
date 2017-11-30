@@ -14,16 +14,17 @@ public class BookValidation implements JavaDelegate {
 	  // Inject the entity manager
 	
 	public void execute(DelegateExecution execution) throws Exception {
-	  final Logger LOGGER = Logger.getLogger("BOOK-VALIDATION");
-	  final String USER_AGENT = "Mozilla/5.0";
-
-	  LOGGER.info("Booking Hotel");
-	  String customer_id = execution.getVariable("customer_id").toString();
-	  String type = execution.getVariable("type").toString();
-	  Integer amount = Integer.valueOf(execution.getVariable("amount").toString());
-	  String worker_id = execution.getVariable("worker_id").toString();
-
-	  String url = "http://167.205.35.162:5000/book/validate";
+		final Logger LOGGER = Logger.getLogger("BOOK-VALIDATION");
+		final String USER_AGENT = "Mozilla/5.0";
+		
+		LOGGER.info("Booking Hotel");
+		String customer_id = execution.getVariable("customer_id").toString();
+		String type = execution.getVariable("type").toString();
+		Integer amount = Integer.valueOf(execution.getVariable("amount").toString());
+		String worker_id = execution.getVariable("worker_id").toString();
+		
+//		String url = "http://localhost:5000/book/validate";
+		String url = "http://167.205.35.162:5000/book/validate";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

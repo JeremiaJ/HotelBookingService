@@ -56,9 +56,9 @@ public class PaymentProcess implements JavaDelegate {
 	    //print result
 		LOGGER.info(response.toString());
 
-	    JSONObject jsonObject = new JSONObject(response.toString());
-	    String transaction_id = jsonObject.getString("transaction_id");
-	    int total_price = jsonObject.getInt("total_price");
+//	    JSONObject jsonObject = new JSONObject(response.toString());
+//	    String transaction_id = jsonObject.getString("transaction_id");
+//	    int total_price = jsonObject.getInt("total_price");
 
 //	    ==========================
 //	    send to payment gateway
@@ -103,7 +103,8 @@ public class PaymentProcess implements JavaDelegate {
 //	    ==========================
 //	    if transaction process failed to start
 //	    ==========================
-//		execution.setVariable("ProcessStatus", responseCode2);
-		execution.setVariable("ProcessStatus", 200);
+	    Integer responseCode2 = 200;
+		execution.setVariable("ProcessStatus", responseCode2);
+		LOGGER.info(responseCode2.toString());
 	}
 }
